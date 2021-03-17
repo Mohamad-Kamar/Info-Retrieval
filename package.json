@@ -1,0 +1,15 @@
+{
+  "name": "information-retrieval",
+  "version": "1.0.0",
+  "description": "CSCI512 Information Retrieval",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Mohamad Kamar",
+  "license": "ISC",
+  "dependencies": {
+    "stopword": "^1.0.7"
+  }
+}
