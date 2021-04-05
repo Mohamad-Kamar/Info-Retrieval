@@ -1,7 +1,5 @@
 const fs = require('fs');
-const sw = require('stopword')
-const stemmer = require('./stemmer');
-
+const { getFileNames, getText, textToStpArray, stpToStemmer, countWords, writeToFile } = require('./utils')
 
 const SAMPLE_TEXT_FOLDER_NAME = './SampleTexts';
 const STP_FOLDER_NAME = './StpFiles'
@@ -10,18 +8,16 @@ const JSON_FOLDER_NAME = './JSONFiles'
 
 function main() {
 
-    let fileNames = fs.readdirSync(SAMPLE_TEXT_FOLDER_NAME)
-        .filter(file => file.substring(file.lastIndexOf('.') + 1) == 'txt')
-        .map(file => file.substring(0, file.lastIndexOf('.')));
+    let fileNames = getFileNames(SAMPLE_TEXT_FOLDER_NAME);
 
     fileNames.forEach(fileName => console.log(fileName))
 
     for (let fileName of fileNames) {
-        const text = getText(fileName);
+        const text = getText(SAMPLE_TEXT_FOLDER_NAME, fileName);
 
 
         const stpArray = textToStpArray(text);
-        const stemmedArray = stpArray.map(word => stemmer(word)).filter(word => word);
+        const stemmedArray = stpToStemmer(stpArray);
 
 
         const stpText = stpArray.join("\n");
@@ -37,57 +33,5 @@ function main() {
     }
 
 }
-function getText(fileName) {
-    try {
-        if (!fs.existsSync(SAMPLE_TEXT_FOLDER_NAME)) {
-            fs.mkdirSync(SAMPLE_TEXT_FOLDER_NAME);
-        }
-        const data = fs.readFileSync(`${SAMPLE_TEXT_FOLDER_NAME}/${fileName}.txt`, 'utf8')
-        // console.log(data)
-        return data;
-    }
-    catch (err) {
-        throw Error("Error at Reading the txt file")
-    }
-}
 
-
-function textToStpArray(text) {
-    try {
-        const pureTextArray = text.split(/\W+/g);
-        const stopTextArray = sw.removeStopwords(pureTextArray);
-        return stopTextArray;
-    }
-    catch (error) {
-        console.log(error);
-    }
-
-}
-
-
-function countWords(stemmedArray) {
-    let wordCountsObj = {};
-    stemmedArray.forEach(word => {
-        if (word in wordCountsObj)
-            wordCountsObj[word] += 1
-        else
-            wordCountsObj[word] = 1
-    })
-    return wordCountsObj;
-}
-
-function writeToFile(folderName, fileName, content) {
-    try {
-        if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
-        }
-        const data = fs.writeFileSync(`${folderName}/${fileName}.json`, content, { flag: 'w+' });
-        //file written successfully
-    } catch (err) {
-        console.error(err)
-    }
-}
 main()
-
-
-
