@@ -4,15 +4,16 @@ const stemmer = require('./stemmer').stemmer;
 const SAMPLE_TEXT_FOLDER_NAME = './SampleTexts';
 const STP_FOLDER_NAME = './StpFiles'
 const SFX_FOLDER_NAME = './SfxFiles'
+const JSON_FOLDER_NAME = './JSONFiles'
 
 function main(){
 
     let fileNames = fs.readdirSync(SAMPLE_TEXT_FOLDER_NAME)
         .filter(file=>file.substring(file.lastIndexOf('.')+1) == 'txt')
-        // .forEach(file=>console.log(file.substring(0,file.lastIndexOf('.'))))
         .map(file=>file.substring(0,file.lastIndexOf('.')));
 
-    
+    fileNames.forEach(fileName => console.log(fileName))
+
     for(let fileName of fileNames){
         const text = getText(fileName);
 
@@ -24,8 +25,13 @@ function main(){
         const stpText = stpArray.join("\n");
         const stemmedWords = stemmedArray.join('\n');
 
+        const wordCountsObj = countWords(stemmedArray);
+
+        const wordCountsStr = JSON.stringify(wordCountsObj,null,2)
+
         writeToStpFile(fileName,stpText);
-        writeToSfxFile(fileName,stemmedWords);    
+        writeToSfxFile(fileName,stemmedWords);
+        writeToJSONFile(fileName,wordCountsStr);   
     }
 
 }
@@ -57,6 +63,16 @@ function textToStpArray(text){
 }
 
 
+function countWords(stemmedArray){
+    let wordCountsObj = {};
+    stemmedArray.forEach(word=>{
+        if (word in wordCountsObj)
+            wordCountsObj[word] += 1
+        else
+            wordCountsObj[word] = 1
+    })
+    return wordCountsObj;
+}
 
 function writeToStpFile(fileName,content){
     try {
@@ -83,7 +99,17 @@ function writeToSfxFile(fileName,content){
 
 
 
-
+function writeToJSONFile(fileName,wordCounts){
+    try {
+        if (!fs.existsSync(JSON_FOLDER_NAME)){
+            fs.mkdirSync(JSON_FOLDER_NAME);
+        }
+        const data = fs.writeFileSync(`${JSON_FOLDER_NAME}/${fileName}.json`, wordCounts,{ flag: 'w+' });
+        //file written successfully
+        } catch (err) {
+            console.error(err)
+        }     
+}
 
 
 main()
