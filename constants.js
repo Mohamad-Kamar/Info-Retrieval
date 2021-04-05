@@ -1,0 +1,19 @@
+const SAMPLE_TEXT_FOLDER_NAME = "./SampleTexts";
+const TEXT_FILE_EXTENTION = 'txt';
+const STP_FOLDER_NAME = "./StpFiles";
+const STP_FILE_EXTENTION = 'sfx'
+const SFX_FOLDER_NAME = "./SfxFiles";
+const SFX_FILE_EXTENTION = 'sfx'
+const JSON_FOLDER_NAME = "./JSONFiles";
+const JSON_FOLDER_EXTENTION = 'json';
+
+module.exports = { 
+    SAMPLE_TEXT_FOLDER_NAME, 
+    TEXT_FILE_EXTENTION, 
+    STP_FOLDER_NAME,
+    STP_FILE_EXTENTION,
+    SFX_FOLDER_NAME,
+    SFX_FILE_EXTENTION,
+    JSON_FOLDER_NAME,
+    JSON_FOLDER_EXTENTION
+};

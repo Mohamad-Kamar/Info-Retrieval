@@ -2,12 +2,12 @@ const fs = require("fs");
 const sw = require("stopword");
 const stemmer = require("./stemmer");
 
-const getText = (folderName, fileName) => {
+const getText = (folderName, fileName, ext) => {
     try {
         if (!fs.existsSync(folderName)) {
             fs.mkdirSync(folderName);
         }
-        const data = fs.readFileSync(`${folderName}/${fileName}.txt`, "utf8");
+        const data = fs.readFileSync(`${folderName}/${fileName}.${ext}`, "utf8");
         // console.log(data)
         return data;
     } catch (err) {
@@ -34,12 +34,12 @@ const countWords = (stemmedArray) => {
     return wordCountsObj;
 };
 
-const writeToFile = (folderName, fileName, content) => {
+const writeToFile = (folderName, fileName, content, extention) => {
     try {
         if (!fs.existsSync(folderName)) {
             fs.mkdirSync(folderName);
         }
-        const data = fs.writeFileSync(`${folderName}/${fileName}.json`, content, {
+        const data = fs.writeFileSync(`${folderName}/${fileName}.${extention}`, content, {
             flag: "w+",
         });
         //file written successfully
@@ -51,10 +51,10 @@ const writeToFile = (folderName, fileName, content) => {
 const stpToStemmer = (stpArray) =>
     stpArray.map((word) => stemmer(word)).filter((word) => word);
 
-const getFileNames = (folderName) => {
+const getFileNames = (folderName, extention) => {
     return fs
         .readdirSync(folderName)
-        .filter((file) => file.substring(file.lastIndexOf(".") + 1) == "txt")
+        .filter((file) => file.substring(file.lastIndexOf(".") + 1) == extention)
         .map((file) => file.substring(0, file.lastIndexOf(".")));
 };
 
