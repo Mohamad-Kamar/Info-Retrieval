@@ -1,6 +1,8 @@
 const fs = require('fs');
 const sw = require('stopword')
-const stemmer = require('./stemmer').stemmer;
+const stemmer = require('./stemmer');
+
+
 const SAMPLE_TEXT_FOLDER_NAME = './SampleTexts';
 const STP_FOLDER_NAME = './StpFiles'
 const SFX_FOLDER_NAME = './SfxFiles'
