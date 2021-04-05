@@ -3,7 +3,11 @@ const sw = require('stopword')
 const stemmer = require('./stemmer').stemmer;
 function getText(fileName){
     try {
-        const data = fs.readFileSync(`./SampleTexts/${fileName}.txt`, 'utf8')
+        const sampleTextFolderName = './SampleTexts';
+        if (!fs.existsSync(sampleTextFolderName)){
+            fs.mkdirSync(sampleTextFolderName);
+        }
+        const data = fs.readFileSync(`${sampleTextFolderName}/${fileName}.txt`, 'utf8')
         // console.log(data)
         return data;
     }
@@ -14,7 +18,6 @@ function getText(fileName){
 
 function textToStpArray(text){
     try{
-        const mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         const pureTextArray = text.split(/\W+/g);
         const stopTextArray = sw.removeStopwords(pureTextArray);
         return stopTextArray;
@@ -27,7 +30,11 @@ function textToStpArray(text){
 
 function writeToStpFile(fileName,content){
     try {
-        const data = fs.writeFileSync(`./StpFiles/${fileName}.stp`, content,{ flag: 'w+' })
+        const stpFolderName = './StpFiles'
+        if (!fs.existsSync(stpFolderName)){
+            fs.mkdirSync(stpFolderName);
+        }
+        const data = fs.writeFileSync(`${stpFolderName}/${fileName}.stp`, content,{ flag: 'w+' })
         //file written successfully
       } catch (err) {
         console.error(err)
@@ -35,7 +42,11 @@ function writeToStpFile(fileName,content){
 }
 function writeToSfxFile(fileName,content){
     try {
-        const data = fs.writeFileSync(`./SfxFiles/${fileName}.sfx`, content,{ flag: 'w+' })
+        const sfxFolderName = './SfxFiles'
+        if (!fs.existsSync(sfxFolderName)){
+            fs.mkdirSync(sfxFolderName);
+        }
+        const data = fs.writeFileSync(`${sfxFolderName}/${fileName}.sfx`, content,{ flag: 'w+' });
         //file written successfully
       } catch (err) {
         console.error(err)
