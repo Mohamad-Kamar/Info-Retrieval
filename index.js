@@ -29,9 +29,9 @@ function main() {
 
         const wordCountsStr = JSON.stringify(wordCountsObj, null, 2)
 
-        writeToStpFile(fileName, stpText);
-        writeToSfxFile(fileName, stemmedWords);
-        writeToJSONFile(fileName, wordCountsStr);
+        writeToFile(STP_FOLDER_NAME, fileName, stpText);
+        writeToFile(SFX_FOLDER_NAME, fileName, stemmedWords);
+        writeToFile(JSON_FOLDER_NAME, fileName, wordCountsStr);
     }
 
 }
@@ -74,48 +74,18 @@ function countWords(stemmedArray) {
     return wordCountsObj;
 }
 
-function writeToStpFile(fileName, content) {
+function writeToFile(folderName, fileName, content) {
     try {
-        if (!fs.existsSync(STP_FOLDER_NAME)) {
-            fs.mkdirSync(STP_FOLDER_NAME);
+        if (!fs.existsSync(folderName)) {
+            fs.mkdirSync(folderName);
         }
-        const data = fs.writeFileSync(`${STP_FOLDER_NAME}/${fileName}.stp`, content, { flag: 'w+' })
+        const data = fs.writeFileSync(`${folderName}/${fileName}.json`, content, { flag: 'w+' });
         //file written successfully
     } catch (err) {
         console.error(err)
     }
 }
-function writeToSfxFile(fileName, content) {
-    try {
-        if (!fs.existsSync(SFX_FOLDER_NAME)) {
-            fs.mkdirSync(SFX_FOLDER_NAME);
-        }
-        const data = fs.writeFileSync(`${SFX_FOLDER_NAME}/${fileName}.sfx`, content, { flag: 'w+' });
-        //file written successfully
-    } catch (err) {
-        console.error(err)
-    }
-}
-
-
-
-function writeToJSONFile(fileName, wordCounts) {
-    try {
-        if (!fs.existsSync(JSON_FOLDER_NAME)) {
-            fs.mkdirSync(JSON_FOLDER_NAME);
-        }
-        const data = fs.writeFileSync(`${JSON_FOLDER_NAME}/${fileName}.json`, wordCounts, { flag: 'w+' });
-        //file written successfully
-    } catch (err) {
-        console.error(err)
-    }
-}
-
-
 main()
 
-// let s = `! @ # % ^ & * ( ) _ + | \ = - { 
-// } ] [ : ” ’ ; ? > < , . /`
-// let newS = s.trim().split(" ").join("");
-// console.log(newS);
+
 
