@@ -6,15 +6,15 @@ const STP_FOLDER_NAME = './StpFiles'
 const SFX_FOLDER_NAME = './SfxFiles'
 const JSON_FOLDER_NAME = './JSONFiles'
 
-function main(){
+function main() {
 
     let fileNames = fs.readdirSync(SAMPLE_TEXT_FOLDER_NAME)
-        .filter(file=>file.substring(file.lastIndexOf('.')+1) == 'txt')
-        .map(file=>file.substring(0,file.lastIndexOf('.')));
+        .filter(file => file.substring(file.lastIndexOf('.') + 1) == 'txt')
+        .map(file => file.substring(0, file.lastIndexOf('.')));
 
     fileNames.forEach(fileName => console.log(fileName))
 
-    for(let fileName of fileNames){
+    for (let fileName of fileNames) {
         const text = getText(fileName);
 
 
@@ -27,17 +27,17 @@ function main(){
 
         const wordCountsObj = countWords(stemmedArray);
 
-        const wordCountsStr = JSON.stringify(wordCountsObj,null,2)
+        const wordCountsStr = JSON.stringify(wordCountsObj, null, 2)
 
-        writeToStpFile(fileName,stpText);
-        writeToSfxFile(fileName,stemmedWords);
-        writeToJSONFile(fileName,wordCountsStr);   
+        writeToStpFile(fileName, stpText);
+        writeToSfxFile(fileName, stemmedWords);
+        writeToJSONFile(fileName, wordCountsStr);
     }
 
 }
-function getText(fileName){
+function getText(fileName) {
     try {
-        if (!fs.existsSync(SAMPLE_TEXT_FOLDER_NAME)){
+        if (!fs.existsSync(SAMPLE_TEXT_FOLDER_NAME)) {
             fs.mkdirSync(SAMPLE_TEXT_FOLDER_NAME);
         }
         const data = fs.readFileSync(`${SAMPLE_TEXT_FOLDER_NAME}/${fileName}.txt`, 'utf8')
@@ -50,22 +50,22 @@ function getText(fileName){
 }
 
 
-function textToStpArray(text){
-    try{
+function textToStpArray(text) {
+    try {
         const pureTextArray = text.split(/\W+/g);
         const stopTextArray = sw.removeStopwords(pureTextArray);
         return stopTextArray;
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 
 }
 
 
-function countWords(stemmedArray){
+function countWords(stemmedArray) {
     let wordCountsObj = {};
-    stemmedArray.forEach(word=>{
+    stemmedArray.forEach(word => {
         if (word in wordCountsObj)
             wordCountsObj[word] += 1
         else
@@ -74,41 +74,41 @@ function countWords(stemmedArray){
     return wordCountsObj;
 }
 
-function writeToStpFile(fileName,content){
+function writeToStpFile(fileName, content) {
     try {
-        if (!fs.existsSync(STP_FOLDER_NAME)){
+        if (!fs.existsSync(STP_FOLDER_NAME)) {
             fs.mkdirSync(STP_FOLDER_NAME);
         }
-        const data = fs.writeFileSync(`${STP_FOLDER_NAME}/${fileName}.stp`, content,{ flag: 'w+' })
+        const data = fs.writeFileSync(`${STP_FOLDER_NAME}/${fileName}.stp`, content, { flag: 'w+' })
         //file written successfully
-      } catch (err) {
+    } catch (err) {
         console.error(err)
-      }    
+    }
 }
-function writeToSfxFile(fileName,content){
+function writeToSfxFile(fileName, content) {
     try {
-        if (!fs.existsSync(SFX_FOLDER_NAME)){
+        if (!fs.existsSync(SFX_FOLDER_NAME)) {
             fs.mkdirSync(SFX_FOLDER_NAME);
         }
-        const data = fs.writeFileSync(`${SFX_FOLDER_NAME}/${fileName}.sfx`, content,{ flag: 'w+' });
+        const data = fs.writeFileSync(`${SFX_FOLDER_NAME}/${fileName}.sfx`, content, { flag: 'w+' });
         //file written successfully
-      } catch (err) {
+    } catch (err) {
         console.error(err)
-      }    
+    }
 }
 
 
 
-function writeToJSONFile(fileName,wordCounts){
+function writeToJSONFile(fileName, wordCounts) {
     try {
-        if (!fs.existsSync(JSON_FOLDER_NAME)){
+        if (!fs.existsSync(JSON_FOLDER_NAME)) {
             fs.mkdirSync(JSON_FOLDER_NAME);
         }
-        const data = fs.writeFileSync(`${JSON_FOLDER_NAME}/${fileName}.json`, wordCounts,{ flag: 'w+' });
+        const data = fs.writeFileSync(`${JSON_FOLDER_NAME}/${fileName}.json`, wordCounts, { flag: 'w+' });
         //file written successfully
-        } catch (err) {
-            console.error(err)
-        }     
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 
