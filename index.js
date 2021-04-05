@@ -3,7 +3,7 @@ const sw = require('stopword')
 const stemmer = require('./stemmer').stemmer;
 function getText(fileName){
     try {
-        const data = fs.readFileSync(`./sampleTexts/${fileName}.txt`, 'utf8')
+        const data = fs.readFileSync(`./SampleTexts/${fileName}.txt`, 'utf8')
         // console.log(data)
         return data;
     }
@@ -27,7 +27,7 @@ function textToStpArray(text){
 
 function writeToStpFile(fileName,content){
     try {
-        const data = fs.writeFileSync(`./sampleTexts/${fileName}.stp`, content,{ flag: 'w+' })
+        const data = fs.writeFileSync(`./StpFiles/${fileName}.stp`, content,{ flag: 'w+' })
         //file written successfully
       } catch (err) {
         console.error(err)
@@ -35,7 +35,7 @@ function writeToStpFile(fileName,content){
 }
 function writeToSfxFile(fileName,content){
     try {
-        const data = fs.writeFileSync(`./sampleTexts/${fileName}.sfx`, content,{ flag: 'w+' })
+        const data = fs.writeFileSync(`./SfxFiles/${fileName}.sfx`, content,{ flag: 'w+' })
         //file written successfully
       } catch (err) {
         console.error(err)
