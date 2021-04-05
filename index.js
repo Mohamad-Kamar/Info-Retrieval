@@ -1,6 +1,21 @@
 const fs = require('fs');
 const sw = require('stopword')
 const stemmer = require('./stemmer').stemmer;
+
+
+function main(originalFilename){
+    let fileName = originalFilename;
+    
+    const text = getText(fileName);
+    const stpArray = textToStpArray(text);
+
+    const stpText = stpArray.join("\n");
+    writeToStpFile(fileName,stpText);
+
+    const stemmedWords = stpArray.map(word => stemmer(word)).filter(word => word).join('\n');
+    writeToSfxFile(fileName,stemmedWords);
+
+}
 function getText(fileName){
     try {
         const sampleTextFolderName = './SampleTexts';
@@ -16,6 +31,7 @@ function getText(fileName){
     }
 }
 
+
 function textToStpArray(text){
     try{
         const pureTextArray = text.split(/\W+/g);
@@ -27,6 +43,8 @@ function textToStpArray(text){
     }
 
 }
+
+
 
 function writeToStpFile(fileName,content){
     try {
@@ -52,19 +70,8 @@ function writeToSfxFile(fileName,content){
         console.error(err)
       }    
 }
-function main(originalFilename){
-    let fileName = originalFilename;
-    
-    const text = getText(fileName);
-    const stpArray = textToStpArray(text);
 
-    const stpText = stpArray.join("\n");
-    writeToStpFile(fileName,stpText);
 
-    const stemmedWords = stpArray.map(word => stemmer(word)).filter(word => word).join('\n');
-    writeToSfxFile(fileName,stemmedWords);
-
-}
 main('myaw');
 
 
