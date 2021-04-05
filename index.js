@@ -1,28 +1,40 @@
 const fs = require('fs');
 const sw = require('stopword')
 const stemmer = require('./stemmer').stemmer;
+const SAMPLE_TEXT_FOLDER_NAME = './SampleTexts';
+const STP_FOLDER_NAME = './StpFiles'
+const SFX_FOLDER_NAME = './SfxFiles'
 
+function main(){
 
-function main(originalFilename){
-    let fileName = originalFilename;
+    let fileNames = fs.readdirSync(SAMPLE_TEXT_FOLDER_NAME)
+        .filter(file=>file.substring(file.lastIndexOf('.')+1) == 'txt')
+        // .forEach(file=>console.log(file.substring(0,file.lastIndexOf('.'))))
+        .map(file=>file.substring(0,file.lastIndexOf('.')));
+
     
-    const text = getText(fileName);
-    const stpArray = textToStpArray(text);
+    for(let fileName of fileNames){
+        const text = getText(fileName);
 
-    const stpText = stpArray.join("\n");
-    writeToStpFile(fileName,stpText);
 
-    const stemmedWords = stpArray.map(word => stemmer(word)).filter(word => word).join('\n');
-    writeToSfxFile(fileName,stemmedWords);
+        const stpArray = textToStpArray(text);
+        const stemmedArray = stpArray.map(word => stemmer(word)).filter(word => word);
+
+
+        const stpText = stpArray.join("\n");
+        const stemmedWords = stemmedArray.join('\n');
+
+        writeToStpFile(fileName,stpText);
+        writeToSfxFile(fileName,stemmedWords);    
+    }
 
 }
 function getText(fileName){
     try {
-        const sampleTextFolderName = './SampleTexts';
-        if (!fs.existsSync(sampleTextFolderName)){
-            fs.mkdirSync(sampleTextFolderName);
+        if (!fs.existsSync(SAMPLE_TEXT_FOLDER_NAME)){
+            fs.mkdirSync(SAMPLE_TEXT_FOLDER_NAME);
         }
-        const data = fs.readFileSync(`${sampleTextFolderName}/${fileName}.txt`, 'utf8')
+        const data = fs.readFileSync(`${SAMPLE_TEXT_FOLDER_NAME}/${fileName}.txt`, 'utf8')
         // console.log(data)
         return data;
     }
@@ -48,11 +60,10 @@ function textToStpArray(text){
 
 function writeToStpFile(fileName,content){
     try {
-        const stpFolderName = './StpFiles'
-        if (!fs.existsSync(stpFolderName)){
-            fs.mkdirSync(stpFolderName);
+        if (!fs.existsSync(STP_FOLDER_NAME)){
+            fs.mkdirSync(STP_FOLDER_NAME);
         }
-        const data = fs.writeFileSync(`${stpFolderName}/${fileName}.stp`, content,{ flag: 'w+' })
+        const data = fs.writeFileSync(`${STP_FOLDER_NAME}/${fileName}.stp`, content,{ flag: 'w+' })
         //file written successfully
       } catch (err) {
         console.error(err)
@@ -60,11 +71,10 @@ function writeToStpFile(fileName,content){
 }
 function writeToSfxFile(fileName,content){
     try {
-        const sfxFolderName = './SfxFiles'
-        if (!fs.existsSync(sfxFolderName)){
-            fs.mkdirSync(sfxFolderName);
+        if (!fs.existsSync(SFX_FOLDER_NAME)){
+            fs.mkdirSync(SFX_FOLDER_NAME);
         }
-        const data = fs.writeFileSync(`${sfxFolderName}/${fileName}.sfx`, content,{ flag: 'w+' });
+        const data = fs.writeFileSync(`${SFX_FOLDER_NAME}/${fileName}.sfx`, content,{ flag: 'w+' });
         //file written successfully
       } catch (err) {
         console.error(err)
@@ -72,12 +82,11 @@ function writeToSfxFile(fileName,content){
 }
 
 
-main('myaw');
 
 
 
 
-
+main()
 
 // let s = `! @ # % ^ & * ( ) _ + | \ = - { 
 // } ] [ : ” ’ ; ? > < , . /`
