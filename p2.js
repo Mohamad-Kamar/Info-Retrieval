@@ -34,7 +34,11 @@ function main() {
     for (let fileName of fileNames) {
         //read sfx files
         const stemmedText = getText(SFX_FOLDER_NAME, fileName, SFX_FILE_EXTENTION);
-        const stemmedArray = stemmedText.split("\n");
+        const stemmedArray = stemmedText.split(/\W/);
+        // console.log(stemmedArray);
+        if(stemmedArray.length == 0){
+            continue;
+        }
         const wordCountsObj = countWords(stemmedArray);
 
         //count words
@@ -44,7 +48,7 @@ function main() {
                 : (allWordCounts[word] = 1)
         );
 
-        docCountArray.push({ name: fileName, wordCounts: wordCountsObj });
+        docCountArray.push({ name: fileName, wordObj: wordCountsObj });
 
         // const wordCountsStr = JSON.stringify(wordCountsObj, null, 2);
         // writeToFile(
@@ -57,6 +61,7 @@ function main() {
     // fillEmptyWords(docCountArray, allWordCounts);
 
     let occurances = getTermFreq(allWordCounts, docCountArray);
+
     let docBoolArray = tableFromCounter(docCountArray, "binary");
 
     let docTFIDFArray = tableFromCounter(
@@ -65,20 +70,42 @@ function main() {
         fileNames.length,
         occurances
     );
-
-    console.log(docTFIDFArray);
+    // console.log(docCountArray)
+    let words = Object.keys(allWordCounts);
+    words.sort((a,b)=>allWordCounts[b]-allWordCounts[a]).forEach(word=>console.log(word + ': ' +allWordCounts[word]))
+    writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words)
 }
 
-function saveInvBOOL(fileNames, fileName) {
+
+
+function writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words){
+    writeToFile('./Tables','Bool',logAsTable(docBoolArray, words),'txt')
+    console.log('====================================================')
+    writeToFile('./Tables','Count',logAsTable(docCountArray, words),'txt')
+    console.log('====================================================')
+    writeToFile('./Tables','TFIDF',logAsTable(docTFIDFArray, words),'txt')
+
+
+    //to JOSN
+    writeToFile('./JSON','Bool',JSON.stringify(docBoolArray.map(elem=>elem.wordObj),null,2),'json')
+    console.log('====================================================')
+    writeToFile('./JSON','Counts',JSON.stringify(docCountArray.map(elem=>elem.wordObj),null,2),'json')
+    console.log('====================================================')
+    writeToFile('./JSON','TFIDF',JSON.stringify(docTFIDFArray.map(elem=>elem.wordObj),null,2),'json')
+
+    saveInv(docBoolArray, 'InvBOOL')
+    saveInv(docCountArray, 'InvTFRQ')
+    saveInv(docTFIDFArray, 'InvertedTFIDF')
+
+}
+function saveInv(arr, fileName) {
     let str = "";
-    fileNames.forEach((name) => {
-        str += '"' + name + '"' + "\n";
-        let data = JSON.parse(
-            getText(JSON_COUNTER_FOLDER_NAME, name, JSON_FOLDER_EXTENTION)
-        );
-        for (word in data) str += word + "\t" + data[word] + "\n";
-        str += "\n\n";
-    });
+    let names = arr.map(elem=>elem.name)
+    let elems = arr.map(elem=>elem.wordObj)
+    for(let i =0; i<names.length; i++){
+        str += "'"+ names[i]+"'\n\n";
+        str+=Object.keys(elems[i]).join("\n")+'\n\n=========================================\n\n'
+    }
     writeToFile(FINAL_FILES_FOLDER, fileName, str, TEXT_FILE_EXTENTION);
 }
 main();

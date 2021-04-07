@@ -86,7 +86,7 @@ const getTermFreq = (allWordCounts, docCountArray) => {
     Object.keys(allWordCounts).forEach((word) => {
         occurances[word] = [];
         docCountArray.forEach((doc) => {
-            let data = doc.wordCounts;
+            let data = doc.wordObj;
             if (word in data) occurances[word].push(doc.name);
         });
     });
@@ -96,8 +96,8 @@ const getTermFreq = (allWordCounts, docCountArray) => {
 const tableFromCounter = (docs, flag, length = null, occurances = null) => {
     let boolDocs = [];
     docs.forEach((doc) => {
-        let { name, wordCounts } = doc;
-        let wordBool = { ...wordCounts };
+        let { name, wordObj } = doc;
+        let wordBool = { ...wordObj };
         if (flag == "binary") {
             for (let key in wordBool) {
                 if (wordBool[key] > 1) wordBool[key] = 1;
@@ -110,12 +110,32 @@ const tableFromCounter = (docs, flag, length = null, occurances = null) => {
                 wordBool[key] = Number.parseFloat(res).toPrecision(4);
             }
         }
-        boolDocs.push({ name, wordBools: wordBool });
+        boolDocs.push({ name, wordObj: wordBool });
     });
     return boolDocs;
 };
 
-const logAsTable = (allWordsArray, docCountArray) => { };
+const logAsTable = (docs, words) => {
+    let out = ['Files'].concat(words).join("\t")+'\n';
+    docs.forEach(doc=>{
+        if(!doc.wordObj){
+            return;
+        }
+        out += doc.name+ '\t';
+        words.forEach(word=>{
+            if(word in doc.wordObj)
+                out+= doc.wordObj[word] + '\t';
+            else{
+                    out += '0' + '\t';
+            }
+        })
+        out+='\n'
+    })
+    console.log(out);
+
+    return out;
+
+};
 
 module.exports = {
     getBaseLog,
