@@ -14,7 +14,7 @@ const {
     STP_FILE_EXTENTION,
     SFX_FOLDER_NAME,
     SFX_FILE_EXTENTION,
-    JSON_FOLDER_NAME,
+    JSON_COUNTER_FOLDER_NAME,
     JSON_FOLDER_EXTENTION,
 } = require("./constants");
 
@@ -43,7 +43,7 @@ function main() {
         writeToFile(STP_FOLDER_NAME, fileName, stpText, STP_FILE_EXTENTION);
         writeToFile(SFX_FOLDER_NAME, fileName, stemmedText, SFX_FILE_EXTENTION);
         writeToFile(
-            JSON_FOLDER_NAME,
+            JSON_COUNTER_FOLDER_NAME,
             fileName,
             wordCountsStr,
             JSON_FOLDER_EXTENTION

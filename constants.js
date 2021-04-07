@@ -4,8 +4,9 @@ const STP_FOLDER_NAME = "./StpFiles";
 const STP_FILE_EXTENTION = 'sfx'
 const SFX_FOLDER_NAME = "./SfxFiles";
 const SFX_FILE_EXTENTION = 'sfx'
-const JSON_FOLDER_NAME = "./JSONFiles";
+const JSON_COUNTER_FOLDER_NAME = "./JSONCountingFiles";
 const JSON_FOLDER_EXTENTION = 'json';
+const FINAL_FILES_FOLDER = './Results';
 
 module.exports = { 
     SAMPLE_TEXT_FOLDER_NAME, 
@@ -14,6 +15,7 @@ module.exports = {
     STP_FILE_EXTENTION,
     SFX_FOLDER_NAME,
     SFX_FILE_EXTENTION,
-    JSON_FOLDER_NAME,
-    JSON_FOLDER_EXTENTION
+    JSON_COUNTER_FOLDER_NAME,
+    JSON_FOLDER_EXTENTION,
+    FINAL_FILES_FOLDER
 };
