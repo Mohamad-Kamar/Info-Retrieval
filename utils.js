@@ -137,6 +137,34 @@ const logAsTable = (docs, words) => {
 
 };
 
+
+const vectoryDistance = ( docArray, queryArray )=>{
+    let upperSum = 0;
+
+    for(let i = 0; i < docArray.length; i++)
+        upperSum += docArray[i] * queryArray[i];
+
+
+
+    let docSum = 0;
+    let querySum = 0;
+    for( let i =0 ;i< queryArray.length; i++){
+        let docElem = docArray[i];
+        let queryElem = queryArray[i];
+        docSum += Math.pow(docElem,2);
+        querySum += Math.pow(queryElem,2);
+    }
+
+    let lowerMult = Math.sqrt(docSum * querySum);
+
+    let finalResult = upperSum / lowerMult;
+    console.log(Number.parseFloat(finalResult).toPrecision(4));
+    return Number.parseFloat(finalResult).toPrecision(4);
+}
+
+
+
+
 module.exports = {
     getBaseLog,
     getFileNames,
@@ -149,4 +177,5 @@ module.exports = {
     getTermFreq,
     getFilledEmptyWords,
     tableFromCounter,
+    vectoryDistance
 };
