@@ -34,7 +34,7 @@ function main() {
     for (let fileName of fileNames) {
         //read sfx files
         const stemmedText = getText(SFX_FOLDER_NAME, fileName, SFX_FILE_EXTENTION);
-        const stemmedArray = stemmedText.split(/\W/);
+        const stemmedArray = stemmedText.split(/\W+/g);
         // console.log(stemmedArray);
         if(stemmedArray.length == 0){
             continue;
@@ -72,6 +72,7 @@ function main() {
     );
     // console.log(docCountArray)
     let words = Object.keys(allWordCounts);
+    writeToFile('./allWords','allWords',JSON.stringify(allWordCounts,null,2),'json')
     words.sort((a,b)=>allWordCounts[b]-allWordCounts[a]).forEach(word=>console.log(word + ': ' +allWordCounts[word]))
     writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words)
 }
@@ -79,19 +80,19 @@ function main() {
 
 
 function writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words){
-    writeToFile('./Tables','Bool',logAsTable(docBoolArray, words),'txt')
-    console.log('====================================================')
-    writeToFile('./Tables','Count',logAsTable(docCountArray, words),'txt')
-    console.log('====================================================')
-    writeToFile('./Tables','TFIDF',logAsTable(docTFIDFArray, words),'txt')
+    // writeToFile('./Tables','Bool',logAsTable(docBoolArray, words),'txt')
+    // console.log('====================================================')
+    // writeToFile('./Tables','Count',logAsTable(docCountArray, words),'txt')
+    // console.log('====================================================')
+    // writeToFile('./Tables','TFIDF',logAsTable(docTFIDFArray, words),'txt')
 
 
-    //to JOSN
-    writeToFile('./JSON','Bool',JSON.stringify(docBoolArray.map(elem=>elem.wordObj),null,2),'json')
+    // to JOSN
+    writeToFile('./JSON','Bool',JSON.stringify(docBoolArray,null,2),'json')
     console.log('====================================================')
-    writeToFile('./JSON','Counts',JSON.stringify(docCountArray.map(elem=>elem.wordObj),null,2),'json')
+    writeToFile('./JSON','Counts',JSON.stringify(docCountArray,null,2),'json')
     console.log('====================================================')
-    writeToFile('./JSON','TFIDF',JSON.stringify(docTFIDFArray.map(elem=>elem.wordObj),null,2),'json')
+    writeToFile('./JSON','TFIDF',JSON.stringify(docTFIDFArray,null,2),'json')
 
     saveInv(docBoolArray, 'InvBOOL')
     saveInv(docCountArray, 'InvTFRQ')
@@ -102,6 +103,9 @@ function saveInv(arr, fileName) {
     let str = "";
     let names = arr.map(elem=>elem.name)
     let elems = arr.map(elem=>elem.wordObj)
+    console.log("++++++++==========")
+    console.log(elems[0])
+    console.log("++++++++==========")
     for(let i =0; i<names.length; i++){
         str += "'"+ names[i]+"'\n\n";
         str+=Object.keys(elems[i]).join("\n")+'\n\n=========================================\n\n'
