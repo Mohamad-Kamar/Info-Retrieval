@@ -163,7 +163,9 @@ const vectoryDistance = ( docArray, queryArray )=>{
 }
 
 
+const binaryDistance = (docArray, queryArray) => {
 
+}
 
 module.exports = {
     getBaseLog,

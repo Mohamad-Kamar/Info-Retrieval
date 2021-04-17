@@ -10,6 +10,7 @@
   "author": "Mohamad Kamar",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "stopword": "^1.0.7"
   }
 }
