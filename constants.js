@@ -1,4 +1,4 @@
-const SAMPLE_TEXT_FOLDER_NAME = "./SampleTexts";
+const SAMPLE_TEXT_FOLDER_NAME = "./Texts";
 const TEXT_FILE_EXTENTION = 'txt';
 const STP_FOLDER_NAME = "./StpFiles";
 const STP_FILE_EXTENTION = 'sfx'
