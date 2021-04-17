@@ -8,7 +8,7 @@ GET http://localhost:5000/api/libraries
 ########################
 
 
-GET http://localhost:5000/api/libraries/Lib1
+GET http://localhost:5000/api/libraries/Lib3
 
 
 ######################################
@@ -18,5 +18,10 @@ content-type : application/json
 
 
 {
-    "name":"Lib2"
+    "name":"Lib3"
 }
+
+########################
+
+
+DELETE http://localhost:5000/api/libraries/Lib3
