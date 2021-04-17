@@ -6,6 +6,10 @@ const logger = require("./middleware/logger");
 
 app.use(logger);
 
+//body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 //Static site files
 app.use(express.static(path.join(__dirname, "public")));
 

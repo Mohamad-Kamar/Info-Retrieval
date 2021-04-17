@@ -9,3 +9,14 @@ GET http://localhost:5000/api/libraries
 
 
 GET http://localhost:5000/api/libraries/Lib1
+
+
+######################################
+
+POST http://localhost:5000/api/libraries
+content-type : application/json
+
+
+{
+    "name":"Lib2"
+}
