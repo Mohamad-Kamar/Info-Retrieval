@@ -1,4 +1,31 @@
-body {
-  background: #333;
-  color: #fff;
+.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.listnav {
+    float: left;
+    border-right: 1px solid #bbb;
+}
+
+.listnav:last-child {
+    float: right;
+    border-right: none;
+    background-color: #4caf50;
+}
+
+.listnav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+.listnav a:hover {
+    background-color: #111;
 }

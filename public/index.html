@@ -4,12 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/style.css">
+    <script lang="Javscript" defer src="index.js"></script>
     <title>Information Retrieval Engine</title>
 </head>
 <body>
-    <h1>Hello So Far</h1>
-    <!-- <button class="btn btn-primary">CLick Me</button> -->
+    <ul class="nav">
+        <li class="listnav"><a href="/">Search</a></li>
+        <li class="listnav"><a href="/libraries.html">Libraries</a></li>
+        <li class="listnav"><a href="/about.html">About</a></li>
+    </ul>
+
+    <br>
+    <br>
+    <h3>Search Value:</h3>
+    <input type="text" id="searchValue" value=""><br>
+    <button id="searchBtn" onclick="searchAll()">Search</button>
+
+    <p id="loadingString"></p>
+
+    <ul id="docResults"></ul>
 </body>
 </html>
