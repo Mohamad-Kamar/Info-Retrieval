@@ -29,3 +29,33 @@
 .listnav a:hover {
     background-color: #111;
 }
+
+#libraries {
+    margin: 3px;
+    padding: 2px;
+    list-style-type: none;
+}
+
+.libList {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: grey;
+    font-size: 22px;
+    margin: 2px 4px 10px 2px;
+    cursor: pointer;
+}
+
+.libListBtn {
+    float: right;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
