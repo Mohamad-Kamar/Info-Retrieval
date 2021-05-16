@@ -1,45 +1,56 @@
 const express = require("express");
 const path = require("path");
 
-const libraries = express.Router();
+const docRouter = express.Router({ mergeParams: true });
 const fs = require("fs");
-const { getText } = require("./../../utils");
+const { getText, getFileNames, writeToFile } = require("./../../utils");
 
-libraries.get("/:docName", (req, res) => res.json(getText(req.params.libName)));
-
-libraries.post("/", (req, res) => {
-    const dirName = req.body.name;
-    const dirPath = path.join("Libraries", dirName);
-    if (!libraries.find((folderName) => folderName == dirName)) {
-        fs.mkdirSync(dirPath);
-        libraries.push(dirName);
-        res.json(libraries);
-    } else {
-        res.status(400).json({ message: "File Already Exists" });
+docRouter.get("/", async (req, res) => {
+    let docs;
+    try {
+        let requestedPath = path.join("Libraries", req.params.libName, "Text");
+        docs = await getFileNames(requestedPath, "txt");
+        res.status(200).json(docs);
+    } catch (e) {
+        console.error(e.message);
+        res.status(400).json({ msg: "Requested Library not found" });
+    }
+});
+docRouter.get("/:docName", async (req, res) => {
+    const libName = req.params.libName;
+    const docName = req.params.docName;
+    let requestedText;
+    try {
+        let requestedPath = path.join("Libraries", libName, "Text", docName);
+        requestedText = await getText(requestedPath, "txt");
+        return res.status(200).send(requestedText);
+    } catch (err) {
+        res.status(404).json({ msg: err.message });
     }
 });
 
-libraries.get("/:lib", (req, res) => {
-    const found = libraries.find((lib) => lib == req.params.lib);
-    if (found) {
-        res.send(found);
-    } else {
-        res.status(400).send("No dir found");
-    }
+docRouter.post("/", async (req, res) => {
+    const docName = req.body.docName;
+    const docPath = path.join("Libraries", req.params.libName, docName);
+    fs.closeSync(fs.openSync(docPath + ".txt", "w"));
+    libraries.push(dirName);
+    res.json(libraries);
+    res.status(400).json({ message: "File Already Exists" });
 });
 
-libraries.delete("/:lib", (req, res) => {
-    const found = libraries.find((lib) => lib == req.params.lib);
-    if (found) {
-        const dirPath = path.join("Libraries", found);
-        libraries = libraries.filter((name) => name != found);
-        fs.rmdirSync(dirPath, { recursive: true });
-        res.send(found);
-    } else {
-        res.status(400).send("No dir found");
-    }
+docRouter.put("/:docName", async (req, res) => {
+    let content = req.body.content;
+    let docName = req.params.docName;
+    let libName = req.params.libName;
+    const docPath = path.join("Libraries", libName, "Text", docName);
+    writeToFile(docPath, content, "txt");
 });
 
-libraries.use("/:lib/document");
+docRouter.delete("/:docName", (req, res) => {
+    let docName = req.params.docName;
+    let libName = req.params.libName;
+    const docPath = path.join("Libraries", libName, docName);
+    fs.promises.rm(docPath);
+});
 
-module.exports = libraries;
+module.exports = docRouter;
