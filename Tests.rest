@@ -12,18 +12,24 @@ GET http://localhost:5000/api/libraries/Lib1
 
 
 ######################################
-
 POST http://localhost:5000/api/libraries
 content-type : application/json
 
 
 {
-    "name":"Lib3"
+    "name":"Lib5"
 }
 
 ########################
+GET http://localhost:5000/api/libraries/Lib1/document/banana
 
 
-DELETE http://localhost:5000/api/libraries/Lib3
+######################################
+
+
+DELETE http://localhost:5000/api/libraries/Lib5
+
+###############################
+DELETE http://localhost:5000/api/libraries/Lib1/document/doc4.txt
 
 
