@@ -31,11 +31,13 @@ docRouter.get("/:docName", async (req, res) => {
 
 docRouter.post("/", async (req, res) => {
     const docName = req.body.docName;
-    const docPath = path.join("Libraries", req.params.libName, docName);
-    fs.closeSync(fs.openSync(docPath + ".txt", "w"));
-    libraries.push(dirName);
-    res.json(libraries);
-    res.status(400).json({ message: "File Already Exists" });
+    const docPath = path.join("Libraries", req.params.libName, "Text", docName);
+    try {
+        fs.closeSync(fs.openSync(docPath + ".txt", "w"));
+        res.status(201);
+    } catch {
+        res.status(400).json({ message: "File Already Exists" });
+    }
 });
 
 docRouter.put("/:docName", async (req, res) => {

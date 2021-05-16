@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-
+const p1 = require("./../../phases/phase1");
 const libRouter = express.Router();
 const docRouter = require("./documents");
 const fs = require("fs");
@@ -17,9 +17,10 @@ libRouter.get("/:libName", async (req, res) => {
     try {
         let requestedPath = path.join("Libraries", req.params.libName, "Text");
         docs = await getFileNames(requestedPath, "txt");
+        await p1(req.params.libName);
         res.status(200).json(docs);
     } catch (e) {
-        console.error(e.message);
+        console.error(e);
         res.status(400).json({ msg: "Requested Library not found" });
     }
 });
@@ -29,11 +30,16 @@ libRouter.post("/", async (req, res) => {
     const libPath = path.join("Libraries", libName);
     if (!libraries.find((folderName) => folderName == libName)) {
         await fs.promises.mkdir(libPath);
-        await fs.promises.mkdir(libPath + "Text");
-        await fs.promises.mkdir(libPath + "Stp");
-        await fs.promises.mkdir(libPath + "Sfx");
-        libraries.push(libName);
-        res.status(201).json(libraries);
+        Promise.all([
+            fs.promises.mkdir(path.join(libPath, "Text")),
+            fs.promises.mkdir(path.join(libPath, "Stp")),
+            fs.promises.mkdir(path.join(libPath, "Sfx"))
+        ])
+            .then(() => {
+                libraries.push(libName);
+                res.status(201).json(libraries);
+            })
+            .catch((e) => console.log(e));
     } else {
         res.status(400).json({ message: "File Already Exists" });
     }

@@ -17,7 +17,7 @@ content-type : application/json
 
 
 {
-    "name":"Lib5"
+    "name":"Lib4"
 }
 
 ########################
@@ -27,7 +27,7 @@ GET http://localhost:5000/api/libraries/Lib1/document/banana
 ######################################
 
 
-DELETE http://localhost:5000/api/libraries/Lib5
+DELETE http://localhost:5000/api/libraries/Lib4
 
 ###############################
 DELETE http://localhost:5000/api/libraries/Lib1/document/doc4.txt

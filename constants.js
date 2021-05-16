@@ -1,21 +1,21 @@
-const SAMPLE_TEXT_FOLDER_NAME = "./Texts";
-const TEXT_FILE_EXTENTION = 'txt';
-const STP_FOLDER_NAME = "./StpFiles";
-const STP_FILE_EXTENTION = 'sfx'
-const SFX_FOLDER_NAME = "./SfxFiles";
-const SFX_FILE_EXTENTION = 'sfx'
-const JSON_COUNTER_FOLDER_NAME = "./JSONCountingFiles";
-const JSON_FOLDER_EXTENTION = 'json';
-const FINAL_FILES_FOLDER = './Results';
+const TEXT_FOLDER_NAME = "Text";
+const TEXT_FILE_EXTENTION = "txt";
+const STP_FOLDER_NAME = "Stp";
+const STP_FILE_EXTENTION = "sfx";
+const SFX_FOLDER_NAME = "Sfx";
+const SFX_FILE_EXTENTION = "sfx";
+const JSON_COUNTER_FOLDER_NAME = "Json";
+const JSON_FILE_EXTENTION = "json";
+const FINAL_FILES_FOLDER = "Results";
 
-module.exports = { 
-    SAMPLE_TEXT_FOLDER_NAME, 
-    TEXT_FILE_EXTENTION, 
+module.exports = {
+    TEXT_FOLDER_NAME,
+    TEXT_FILE_EXTENTION,
     STP_FOLDER_NAME,
     STP_FILE_EXTENTION,
     SFX_FOLDER_NAME,
     SFX_FILE_EXTENTION,
     JSON_COUNTER_FOLDER_NAME,
-    JSON_FOLDER_EXTENTION,
+    JSON_FILE_EXTENTION,
     FINAL_FILES_FOLDER
 };
