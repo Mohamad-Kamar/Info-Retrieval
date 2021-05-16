@@ -1,49 +1,52 @@
 const express = require("express");
 const path = require("path");
 
-const router = express.Router();
+const libRouter = express.Router();
+const docRouter = require("./documents");
 const fs = require("fs");
-const { getDirectories, getFileNames } = require("./../../utils");
+const { getLibraries, getFileNames } = require("./../../utils");
 
-let libraries = getDirectories("Libraries");
+let libraries = getLibraries(path.join("Libraries"));
 
-router.get("/", (req, res) => res.json(libraries));
-
-router.get("/:lib", (req, res) => {
+libRouter.get("/", (req, res) => {
+    libraries = getLibraries(path.join("Libraries"));
+    return res.json(libraries);
+});
+libRouter.get("/:libName", async (req, res) => {
     let docs;
     try {
-        let requestedPath = path.join("Libraries", req.params.lib);
-        docs = getFileNames(requestedPath, "txt");
-        console.log(docs);
-        res.status(200).send(docs);
-    } catch {
-        res.status(400);
-        console.log("Library Not Found");
+        let requestedPath = path.join("Libraries", req.params.libName, "Text");
+        docs = await getFileNames(requestedPath, "txt");
+        res.status(200).json(docs);
+    } catch (e) {
+        console.error(e.message);
+        res.status(400).json({ msg: "Requested Library not found" });
     }
 });
 
-router.post("/", (req, res) => {
-    const dirName = req.body.name;
-    const dirPath = path.join("Libraries", dirName);
-    if (!libraries.find((folderName) => folderName == dirName)) {
-        fs.mkdirSync(dirPath);
-        libraries.push(dirName);
+libRouter.post("/", async (req, res) => {
+    const libName = req.body.name;
+    const libPath = path.join("Libraries", libName);
+    if (!libraries.find((folderName) => folderName == libName)) {
+        await fs.promises.mkdir(libPath);
+        libraries.push(libName);
         res.status(201).json(libraries);
     } else {
         res.status(400).json({ message: "File Already Exists" });
     }
 });
 
-router.delete("/:lib", (req, res) => {
-    const found = libraries.find((lib) => lib == req.params.lib);
+libRouter.delete("/:libName", async (req, res) => {
+    const found = libraries.find((libName) => libName == req.params.libName);
     if (found) {
-        const dirPath = path.join("Libraries", found);
+        const libPath = path.join("Libraries", found);
         libraries = libraries.filter((name) => name != found);
-        fs.rmdirSync(dirPath, { recursive: true });
+        await fs.promises.rmdir(libPath, { recursive: true });
         res.send(found);
     } else {
         res.status(400).send("No dir found");
     }
 });
+libRouter.use("/:libName/document", docRouter);
 
-module.exports = router;
+module.exports = libRouter;
