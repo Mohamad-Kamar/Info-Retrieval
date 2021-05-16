@@ -6,27 +6,23 @@ const getBaseLog = (x, y) => {
     return Math.log(y) / Math.log(x);
 };
 
-const getDirectories = (path) => {
+const getLibraries = (path) => {
     return fs
         .readdirSync(path)
         .filter((file) => fs.statSync(path + "/" + file).isDirectory());
 };
-const getFileNames = (folderName, extention) => {
-    return fs
-        .readdirSync(folderName)
+const getFileNames = async (path, extention) => {
+    return (await fs.promises.readdir(folderName))
         .filter(
             (file) => file.substring(file.lastIndexOf(".") + 1) == extention
         )
         .map((file) => file.substring(0, file.lastIndexOf(".")));
 };
 
-const getText = (folderName, fileName, ext) => {
+const getText = async (requestedPath, ext) => {
     try {
-        if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
-        }
-        const data = fs.readFileSync(
-            `${folderName}/${fileName}.${ext}`,
+        const data = await fs.promises.readFile(
+            `${requestedPath}.${ext}`,
             "utf8"
         );
         // console.log(data)
@@ -55,18 +51,9 @@ const countWords = (stemmedArray) => {
     return wordCountsObj;
 };
 
-const writeToFile = (folderName, fileName, content, extention) => {
+const writeToFile = async (path, content, extention) => {
     try {
-        if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
-        }
-        const data = fs.writeFileSync(
-            `${folderName}/${fileName}.${extention}`,
-            content,
-            {
-                flag: "w+"
-            }
-        );
+        await fs.promises.writeFile(`${path}.${extention}`, content);
         //file written successfully
     } catch (err) {
         console.error(err);
@@ -183,5 +170,5 @@ module.exports = {
     getFilledEmptyWords,
     tableFromCounter,
     vectoryDistance,
-    getDirectories
+    getLibraries
 };
