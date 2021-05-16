@@ -12,7 +12,7 @@ const getLibraries = (path) => {
         .filter((file) => fs.statSync(path + "/" + file).isDirectory());
 };
 const getFileNames = async (path, extention) => {
-    return (await fs.promises.readdir(folderName))
+    return (await fs.promises.readdir(path))
         .filter(
             (file) => file.substring(file.lastIndexOf(".") + 1) == extention
         )

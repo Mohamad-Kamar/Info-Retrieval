@@ -29,6 +29,9 @@ libRouter.post("/", async (req, res) => {
     const libPath = path.join("Libraries", libName);
     if (!libraries.find((folderName) => folderName == libName)) {
         await fs.promises.mkdir(libPath);
+        await fs.promises.mkdir(libPath + "Text");
+        await fs.promises.mkdir(libPath + "Stp");
+        await fs.promises.mkdir(libPath + "Sfx");
         libraries.push(libName);
         res.status(201).json(libraries);
     } else {

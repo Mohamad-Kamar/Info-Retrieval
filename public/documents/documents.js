@@ -1,8 +1,13 @@
-async function getLibs() {
+async function getDocs() {
     let theList = document.getElementById("libraries");
     const loadingString = document.getElementById("loadingString");
-
-    let results = await (await fetch("/api/libraries")).json();
+    let url = window.location.pathname;
+    let libNameAndRest = url.substr(url.indexOf("/", 1) + 1, url.length);
+    // console.log(libNameAndRest);
+    let libName = libNameAndRest.substr(0, libNameAndRest.lastIndexOf("/"));
+    // console.log(libName);
+    let results = await (await fetch(`/api/libraries/${libName}`)).json();
+    console.log(results);
     results.forEach((res) => {
         let listItem = document.createElement("li");
         listItem.innerText = res;
@@ -31,8 +36,8 @@ function addDeleteButton(listItem) {
 }
 
 function clickedOnLibrary(libName) {
-    return () => {
-        fetch(`/${libName}`);
+    return (e) => {
+        window.location.href = `/libraries/${libName}/documents`;
     };
 }
-getLibs();
+getDocs();
