@@ -11,7 +11,9 @@ const {
     logAsTable,
     getFilledEmptyWords,
     tableFromCounter
-} = require("./utils");
+} = require("./../utils");
+
+const path = require("path");
 
 const {
     TEXT_FOLDER_NAME,
@@ -25,8 +27,11 @@ const {
     FINAL_FILES_FOLDER
 } = require("./constants");
 
-function main() {
-    const fileNames = getFileNames(SFX_FOLDER_NAME, SFX_FILE_EXTENTION);
+function main(libName) {
+    const basePath = path.join(process.cwd(), "Libraries", libName);
+    const SfxPath = path.join(basePath, SFX_FOLDER_NAME);
+
+    const fileNames = getFileNames(SfxPath, SFX_FILE_EXTENTION);
 
     let docCountArray = [];
     let allWordCounts = {};
