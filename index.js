@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const logger = require("./middleware/logger");
 
-// app.use(logger);
+app.use(logger);
 
 //body parser
 app.use(express.json());
