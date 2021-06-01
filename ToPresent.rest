@@ -1,0 +1,25 @@
+POST http://localhost:5000/api/libraries
+content-type : application/json
+
+
+{
+    "name":"TLib"
+}
+
+#####################################
+
+
+GET http://localhost:5000/api/libraries/TestLib
+
+###############################
+GET http://localhost:5000/api/libraries/TestLib/document/search/"using carpets in houses"
+
+
+###############################
+POST http://localhost:5000/api/libraries/TestLib/document/relevance
+content-type : application/json
+
+{
+"devices":["doc213", "doc122"]
+}
+

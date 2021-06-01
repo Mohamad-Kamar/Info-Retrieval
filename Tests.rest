@@ -28,7 +28,7 @@ GET http://localhost:5000/api/libraries/Lib1/document/banana
 ######################################
 
 
-DELETE http://localhost:5000/api/libraries/Lib4
+DELETE http://localhost:5000/api/libraries/TLib
 
 ###############################
 GET http://localhost:5000/api/libraries/TestLib/document/search/"using carpets in houses"

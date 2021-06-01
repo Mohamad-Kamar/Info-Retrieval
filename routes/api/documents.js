@@ -13,6 +13,7 @@ const {
     getBaseLog
 } = require("./../../utils");
 
+let latestFound = [];
 docRouter.get("/", async (req, res) => {
     let docs;
     try {
@@ -23,6 +24,34 @@ docRouter.get("/", async (req, res) => {
         console.error(e.message);
         res.status(400).json({ msg: "Requested Library not found" });
     }
+});
+
+docRouter.post("/relevance", async (req, res) => {
+    let releventNames = new Set(req.body.devices);
+    let relevantRetrieved = 0;
+    let retrieved = 0;
+    let returnedArray = latestFound.map((doc, idx) => {
+        let docName = doc["Document Name"];
+        if (releventNames.has(docName)) {
+            relevantRetrieved++;
+            retrieved++;
+            let precision = relevantRetrieved / retrieved;
+            let recall = relevantRetrieved / releventNames.size;
+            return {
+                Rank: idx + 1,
+                Recall: Number.parseFloat(recall).toPrecision(4),
+                Precision: Number.parseFloat(precision).toPrecision(4)
+            };
+        } else {
+            retrieved++;
+            return {
+                Rank: idx + 1,
+                Recall: 0,
+                Precision: 0
+            };
+        }
+    });
+    res.status(200).json(returnedArray);
 });
 
 docRouter.get("/search/:query", async (req, res) => {
@@ -79,28 +108,21 @@ docRouter.get("/search/:query", async (req, res) => {
                 )
         );
         obj["cosScore"] = numer / deno;
-        // console.log(numer);
-        // console.log(deno);
-        // console.log("==================================");
         queryScores.push(obj);
     });
-    console.log(queryScores);
+    // console.log(queryScores);
     //sort documents according to score
-
-    //return results to user
-    // let requestedPath = path.join("Libraries", req.params.libName, "Text");
-    // docs = await getFileNames(requestedPath, "txt");
-    res.status(200).json(
-        Object.keys(queryScores)
-            .filter((key) => queryScores[key]["cosScore"])
-            .map((key) => {
-                return {
-                    "Document Name": queryScores[key]["docName"],
-                    "Cosine Score": queryScores[key]["cosScore"]
-                };
-            })
-            .sort((a, b) => b["Cosine Score"] - a["Cosine Score"])
-    );
+    let response = Object.keys(queryScores)
+        .filter((key) => queryScores[key]["cosScore"])
+        .map((key) => {
+            return {
+                "Document Name": queryScores[key]["docName"],
+                "Cosine Score": queryScores[key]["cosScore"]
+            };
+        })
+        .sort((a, b) => b["Cosine Score"] - a["Cosine Score"]);
+    latestFound = [...response];
+    res.status(200).json(response);
 });
 docRouter.get("/:docName", async (req, res) => {
     const libName = req.params.libName;
