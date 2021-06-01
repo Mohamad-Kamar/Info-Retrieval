@@ -68,13 +68,13 @@ const phase1 = async (libName) => {
 
 function createRelevantFile(basePath, allWordFreq, docTermFreqs) {
     writeToFile(
-        path.join(basePath, "Inverse Document Frequency"),
+        path.join(basePath, "IDF"),
         JSON.stringify(allWordFreq, null, 2),
         JSON_FILE_EXTENTION
     );
 
     writeToFile(
-        path.join(basePath, "Term Frequencies"),
+        path.join(basePath, "TFIDF"),
         JSON.stringify(docTermFreqs, null, 2),
         JSON_FILE_EXTENTION
     );

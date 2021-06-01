@@ -33,29 +33,22 @@ docRouter.get("/search/:query", async (req, res) => {
     let queryTermFreq = countWords(queryStemmedArray);
     //compare with each document and create list of scores
     const libName = req.params.libName;
-    const TFIDFPath = path.join(
-        "Libraries",
-        req.params.libName,
-        "Term Frequencies"
-    );
+    const TFIDFPath = path.join("Libraries", libName, "TFIDF");
     const docTermFreqs = JSON.parse(
-        await getText(
-            path.join(
-                "Libraries",
-                req.params.libName,
-                "Inverse Document Frequency"
-            ),
-            "json"
-        )
+        await getText(path.join("Libraries", libName, "IDF"), "json")
     );
     const TFIDF = JSON.parse(await getText(TFIDFPath, "json"));
 
     let queryTFIDF = {};
     for (let key of Object.keys(queryTermFreq)) {
-        queryTFIDF[key] =
-            queryTermFreq[key] *
-            getBaseLog(10, TFIDF.length / docTermFreqs[key]);
+        if (key in docTermFreqs) {
+            let val =
+                queryTermFreq[key] *
+                getBaseLog(10, TFIDF.length / docTermFreqs[key]);
+            queryTFIDF[key] = val ? val : 0;
+        }
     }
+
     // console.log(queryTFIDF);
 
     const queryScores = [];
