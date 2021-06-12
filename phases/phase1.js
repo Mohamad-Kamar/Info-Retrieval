@@ -11,11 +11,6 @@ const {
 const {
     TEXT_FOLDER_NAME,
     TEXT_FILE_EXTENTION,
-    STP_FOLDER_NAME,
-    STP_FILE_EXTENTION,
-    SFX_FOLDER_NAME,
-    SFX_FILE_EXTENTION,
-    JSON_COUNTER_FOLDER_NAME,
     JSON_FILE_EXTENTION
 } = require("../constants");
 
@@ -78,12 +73,6 @@ function createRelevantFile(basePath, allWordFreq, docTermFreqs) {
         JSON.stringify(docTermFreqs, null, 2),
         JSON_FILE_EXTENTION
     );
-}
-function getPaths(basePath, docName) {
-    const StpPath = path.join(basePath, STP_FOLDER_NAME, docName);
-    const SfxPath = path.join(basePath, SFX_FOLDER_NAME, docName);
-    const JsonPath = path.join(basePath, JSON_COUNTER_FOLDER_NAME, docName);
-    return [StpPath, SfxPath, JsonPath];
 }
 
 module.exports = phase1;

@@ -68,7 +68,7 @@ const getFilledEmptyWords = (docCountArray, allWordCounts) => {
     completeWordCounts.forEach((doc) => {
         let wordCounts = doc.wordCounts;
         Object.keys(allWordCounts).forEach((word) => {
-            if (!word in wordCounts) {
+            if (!(word in wordCounts)) {
                 wordCounts[word] = 0;
             }
         });
@@ -154,8 +154,6 @@ const vectoryDistance = (docArray, queryArray) => {
     console.log(Number.parseFloat(finalResult).toPrecision(4));
     return Number.parseFloat(finalResult).toPrecision(4);
 };
-
-const binaryDistance = (docArray, queryArray) => {};
 
 module.exports = {
     getBaseLog,

@@ -1,29 +1,18 @@
-const fs = require("fs");
 const {
-    getBaseLog,
     getFileNames,
     getText,
-    textToStpArray,
-    stpToStemmer,
     countWords,
     writeToFile,
     getTermFreq,
-    logAsTable,
-    getFilledEmptyWords,
     tableFromCounter
 } = require("./../utils");
 
 const path = require("path");
 
 const {
-    TEXT_FOLDER_NAME,
     TEXT_FILE_EXTENTION,
-    STP_FOLDER_NAME,
-    STP_FILE_EXTENTION,
     SFX_FOLDER_NAME,
     SFX_FILE_EXTENTION,
-    JSON_COUNTER_FOLDER_NAME,
-    JSON_FILE_EXTENTION,
     FINAL_FILES_FOLDER
 } = require("./constants");
 
@@ -93,7 +82,7 @@ function main(libName) {
     writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words);
 }
 
-function writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray, words) {
+function writeFinalFiles(docBoolArray, docCountArray, docTFIDFArray) {
     // writeToFile('./Tables','Bool',logAsTable(docBoolArray, words),'txt')
     // console.log('====================================================')
     // writeToFile('./Tables','Count',logAsTable(docCountArray, words),'txt')
